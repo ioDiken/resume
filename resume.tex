@@ -1,23 +1,71 @@
 %-------------------------
 % Resume in Latex
-% Author : Sourabh Bajaj
-% License : MIT
+% Author : Nicolas Diken
 %------------------------
 
-\documentclass[letterpaper,11pt]{article}
+%---------- User Vars ----------
+% font size, used for image sizing & overall font sizing
+\newcommand{\fontSize}{11}
 
+% font name, must match microsoft word font file name %% implement
+\newcommand{\fontName}{Calibri}
+\newcommand{\fontNameBold}{Calibrib}
+\newcommand{\fontNameItalic}{Calibrii}
+
+% colors
+\newcommand{\rgbAccentColor}{196,89,17}
+
+% email
+\newcommand{\personalEmail}{nicolas.diken@ieee.org}
+
+% phone
+\newcommand{\phoneNumber}{(650) 815 9939}
+
+% linkedin, do not include https or www
+\newcommand{\linkedInURL}{linkedin.com/in/nicolas-diken}
+
+% flag, if more detailed info wanted
+\newcommand{\detailedInfo}
+
+%-------------------------------
+
+\documentclass[letterpaper,\fontSize pt]{article}
+
+%---------- Packages ----------
 \usepackage{latexsym}
 \usepackage[empty]{fullpage}
 \usepackage{titlesec}
-\usepackage{marvosym}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{verbatim}
-\usepackage{enumitem}
-\usepackage[hidelinks]{hyperref}
+%\usepackage{marvosym} % \hline
+%\usepackage[usenames,dvipsnames]{color}
+%\usepackage{verbatim}
+%\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref} % hyperlinks
 \usepackage{fancyhdr}
 \usepackage[english]{babel}
-\usepackage{tabularx}
+\usepackage{tabularx} % used for boxes and whatnot
+\usepackage{xargs} % used for optional arguments
+\usepackage{xparse}
+\usepackage{xcolor} %colors
+\usepackage{fontspec} % fonts?
+%------------------------------
 
+%---------- User Formatting ----------
+% colors
+\definecolor{accentColor}{RGB}{\rgbAccentColor}
+
+% font type set
+\setmainfont{\fontName} [
+	Extension = .ttf,
+	Path = /Applications/Microsoft Word.app/Contents/Resources/DFonts/,
+	BoldFont = \fontNameBold ,
+	ItalicFont = \fontNameItalic ,
+	Scale = 1.05
+]
+%-------------------------------
+
+\newcommand{\asdf}{asdf} %%
+
+%---------- Page Formatting ----------
 \pagestyle{fancy}
 \fancyhf{} % clear all header and footer fields
 \fancyfoot{}
@@ -36,163 +84,156 @@
 \raggedbottom
 \raggedright
 \setlength{\tabcolsep}{0in}
+%--------------------------------------
 
+%---------- Custom Commands ----------
 % Sections formatting
 \titleformat{\section}{
-  \vspace{-4pt}\scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+  \vspace{-10pt}\scshape\raggedright\large
+}{}{0em}{}[\color{accentColor}\titlerule \vspace{-10pt}]
 
-%-------------------------
-% Custom commands
-\newcommand{\resumeItem}[2]{
+% Education Subheading
+\newcommand{\educationSubheading}[3]{
+	\vspace{5pt}
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1}, #2 & \textbf{#3}
+    \end{tabular*}\vspace{-20pt}
+}
+\newcommand{\educationGradSubheading}[4]{
+	\vspace{5pt}
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1}, #2 & \textbf{#3} \\
+      & \textit{Graduation: #4}
+    \end{tabular*}\vspace{-1pt}
+}
+
+% Experience Subheading
+\newcommand{\experienceSubheading}[4]{
+  \vspace{5pt}
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1}, #2, \textit{#3} & \textbf{#4}
+    \end{tabular*}\vspace{-7pt}
+}
+
+% Project Subheading
+\newcommand{\projectSubheading}[3]{
+  \vspace{5pt}
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1}, \textit{#2} & \textbf{#3}
+    \end{tabular*}\vspace{-7pt}
+}
+
+% resume item
+\newcommand{\resumeItem}[1]{
   \item\small{
-    \textbf{#1}{: #2 \vspace{-2pt}}
+    #1 \vspace{-5pt}
   }
 }
 
-\newcommand{\resumeSubheading}[4]{
-  \vspace{-1pt}\item
-    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{#1} & #2 \\
-      \textit{\small#3} & \textit{\small #4} \\
-    \end{tabular*}\vspace{-5pt}
+% Skills item
+\newcommand{\skillsEntry}[2]{
+	\vspace{5pt}
+		\begin{tabular}{p{0.11\textwidth}p{0.89\textwidth}}
+			\textbf{#1:} & #2
+		\end{tabular}
 }
 
-\newcommand{\resumeSubSubheading}[2]{
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \textit{\small#1} & \textit{\small #2} \\
-    \end{tabular*}\vspace{-5pt}
-}
+% set 1st list bullet
+\renewcommand{\labelitemi}{$\circ$}
 
-\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
-
-\renewcommand{\labelitemii}{$\circ$}
-
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
-\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+% lists for resume items
 \newcommand{\resumeItemListStart}{\begin{itemize}}
 \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
 
-%-------------------------------------------
-%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% image inserter, arg1 image_path, image will match text height
+\newcommand{\pasteImage}[1]{
+\directlua {
+	a = img.new({filename="#1", height="\fontSize bp"})
+	img.write(a)
+}}
 
+%-----------------------------------------
 
 \begin{document}
 
-%----------HEADING-----------------
+%-------------- HEADING -----------------
 \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-  \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
-  \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
+	\textbf{\color{accentColor}\Huge Nicolas Diken} &
+	\href{mailto:\personalEmail}{\personalEmail}\\
+	\href{https://\linkedInURL}{\pasteImage{linkedin.png} \textit{\linkedInURL}} &
+	\href{tel:\phoneNumber}{\phoneNumber}
 \end{tabular*}
 
 
-%-----------EDUCATION-----------------
+%----------- EDUCATION -----------------
 \section{Education}
-  \resumeSubHeadingListStart
-    \resumeSubheading
-      {Georgia Institute of Technology}{Atlanta, GA}
-      {Master of Science in Computer Science;  GPA: 4.00}{Aug. 2012 -- Dec. 2013}
-    \resumeSubheading
-      {Birla Institute of Technology and Science}{Pilani, India}
-      {Bachelor of Engineering in Electrical and Electronics;  GPA: 3.66 (9.15/10.0)}{Aug. 2008 -- July. 2012}
-  \resumeSubHeadingListEnd
+    \educationGradSubheading
+ 		{San Jose State University}{M.S. Computer Engineering}{January 2020 -- Present}
+		{Dec. 2021}
+	\educationSubheading
+		{San Jose State University}{B.S. Electrical Engineering}{August 2016 -- December 2018}
 
-
-%-----------EXPERIENCE-----------------
-\section{Experience}
-  \resumeSubHeadingListStart
-
-    \resumeSubheading
-      {Google}{Mountain View, CA}
-      {Software Engineer}{Oct 2016 - Present}
-      \resumeItemListStart
-        \resumeItem{Tensorflow}
-          {TensorFlow is an open source software library for numerical computation using data flow graphs; primarily used for training deep learning models. Worked on APIs and performance for training models on Tensor Processing Units (TPU).}
-        \resumeItem{Apache Beam}
-          {Apache Beam is a unified model for defining both batch and streaming data-parallel processing pipelines, as well as a set of language-specific SDKs for constructing pipelines and runners.}
-      \resumeItemListEnd
-      
-% --------Multiple Positions Heading------------
-%    \resumeSubSubheading
-%     {Software Engineer I}{Oct 2014 - Sep 2016}
-%     \resumeItemListStart
-%        \resumeItem{Apache Beam}
-%          {Apache Beam is a unified model for defining both batch and streaming data-parallel processing pipelines}
-%     \resumeItemListEnd
-%    \resumeSubHeadingListEnd
-%-------------------------------------------
-
-    \resumeSubheading
-      {Coursera}{Mountain View, CA}
-      {Senior Software Engineer}{Jan 2014 - Oct 2016}
-      \resumeItemListStart
-        \resumeItem{Notifications}
-          {Service for sending email, push and in-app notifications. Involved in features such as delivery time optimization, tracking, queuing and A/B testing. Built an internal app to run batch campaigns for marketing etc.}
-        \resumeItem{Nostos}
-          {Bulk data processing and injection service from Hadoop to Cassandra and provides a thin REST layer on top for serving offline computed data online.}
-        \resumeItem{Workflows}
-          {Dataduct an open source workflow framework to create and manage data pipelines leveraging reusables patterns to expedite developer productivity.}
-        \resumeItem{Data Collection}
-          {Designed the internal survey and crowd sourcing platform which allowed for creating various tasks for crowd sourcing or embedding surveys across the Coursera platform.}
-        \resumeItem{Dev Environment}
-          {Analytics environment based on docker and AWS, standardized the python and R dependencies. Wrote the core libraries that are shared by all data scientists.}
-        \resumeItem{Data Warehousing}
-          {Setup, schema design and management of Amazon Redshift. Built an internal app for access to the data using a web interface. Dataduct integration for daily ETL injection into Redshift.}
-        \resumeItem{Recommendations}
-          {Core service for all recommendation systems at Coursera, currently used on the homepage and throughout the content discovery process. Worked on both offline training and online serving.}
-        \resumeItem{Content Discovery}
-          {Improved content discovery by building a new onboarding experience on coursera. Using this to personalize the search and browse experience. Also worked on ranking and indexing improvements.}
-        \resumeItem{Course Dashboards}
-          {Instructor dashboards and learner surveying tools, which helped instructors run their class better by providing data on Assignments and Learner Activity.}
-      \resumeItemListEnd
-
-    \resumeSubheading
-      {Lucena Research}{Atlanta, GA}
-      {Data Scientist}{Summer 2012 and 2013}
-      \resumeItemListStart
-        \resumeItem{Portfolio Management}
-          {Created models for portfolio hedging,  portfolio optimization and price forecasting. Also creating a strategy backtesting engine used for simulating and backtesting strategies.}
-        \resumeItem{QuantDesk}
-          {Python backend for a web application used by hedge fund managers for portfolio management.}
-      \resumeItemListEnd
-
-    \resumeSubheading
-      {Georgia Institute of Technology}{Atlanta, GA}
-      {Research and Teaching Assistant}{Jan 2012 - Dec 2013}
-      \resumeItemListStart
-        \resumeItem{Research Assistant - Machine Learning}
-          {Research on machine learning for portfolio hedging and replication algorithms. Modeling low-risk \& continuous-return strategies. Developed the python library QSTK.}
-        \resumeItem{Teaching Assistant - Computational Investing}
-          {The online course on Coursera, had more than 100,000 students enrolled. It was featured on the 11 Alive News and the Atlanta Journal Constitution. Involved in creating assignment, exams and conducting recitation sessions. Also taught the on-campus version of the course.}
-      \resumeItemListEnd
-
-  \resumeSubHeadingListEnd
+%----------- EXPERIENCE -----------------
+\section{Work Experience}
+	\experienceSubheading {Byton}
+	{Santa Clara CA}{Hardware Diagnostics Engineer}{August 2018 -- Present}
+      	\resumeItemListStart
+			\resumeItem {Utilized googletest to create testing infrastructure for hardware-level bringup and design verification of infotainment boards.}
+        		\resumeItem {Created new standard for testing infrastructure which allows for portability of tests with minimal overhead to engineers.}
+        		\resumeItem {Designed driver-level tests for variety of chips: DSP (TDM), Amp/Mic (A2B), SERDES (GMSL2/FPD-LinkIII), radio, flash storage (SPI/I2C), camera (MIPI CSI-2), and display (DSI).}
+        		\ifdefined\detailedInfo
+        		\resumeItem {Modified and optimized BSP for ADI SHARC Audio Processor firmware to fit the needs of our system. Tests designed using this DSP (running Audio Weaver) allowed for any DSP-based tests to be used, including FFT, filters, and wave generators.}
+        		\fi
+      	\resumeItemListEnd
+	\experienceSubheading {Maxim Integrated}
+	{San Jose CA}{EE-Sim Engineering Intern}{May 2018 – October 2018}
+		\resumeItemListStart
+			\resumeItem {Used python and DataNitro in combination with SIMPLIS/SIMetrix (a SPICE-based power circuit simulator) to create a tool to fully automate testing \& data extraction of any SPICE-based power system design.}
+			\resumeItem {This also included stepping of circuit parameters, specs, measurements, and component values to create a seamless tool which allows for infinite expandability \& applications.}
+		\resumeItemListEnd
+	\experienceSubheading {Nokia ION}
+	{Mountainview CA} {Electrical Engineering Intern}{May 2017 – August 2017}
+		\resumeItemListStart
+			\resumeItem {Performed a series of tests analyzing serial communication signals (I2C, SPI) as well as a complete DVT on an array of high-power DC/DC converters.}
+			\resumeItem {Worked in a team to design an autonomous fan control system using the MAX31740 Fan-Speed Controller.}
+		\resumeItemListEnd
+	\experienceSubheading {Sentient Energy}
+	{Burlingame CA}{Electrical Engineering Intern}{July 2016 -- August 2016}
+		\resumeItemListStart
+			\resumeItem {Conducted testing on Sentient Energy’s flagship device, MM3, specifically the current measurement system.}
+			\resumeItem {Improved accuracy of the current measurement system through hardware implementations.}
+		\resumeItemListEnd
 
 
 %-----------PROJECTS-----------------
 \section{Projects}
-  \resumeSubHeadingListStart
-    \resumeSubItem{QuantSoftware Toolkit}
-      {Open source python library for financial data analysis and machine learning for finance.}
-    \resumeSubItem{Github Visualization}
-      {Data Visualization of Git Log data using D3 to analyze project trends over time.}
-    \resumeSubItem{Recommendation System}
-      {Music and Movie recommender systems using collaborative filtering on public datasets.}
-    \resumeSubItem{Mac Setup}
-      {Book that gives step by step instructions on setting up developer environment on Mac OS.}
-  \resumeSubHeadingListEnd
+	\projectSubheading {IEEE SJSU Micromouse Team}
+	{Team Leader}{May 2018 – November 2018}
+		\resumeItemListStart
+			\resumeItem {Designed/built a fully autonomous mouse to learn and solve a maze at high speeds using the ATSAM4SD32B (ARM Cortex-M4) MCU.}
+			\resumeItem{Peripherals included: IR \& ultrasonic sensors, H-Bridge motor drivers, optical encoders, and brushed DC motors.}
+		\resumeItemListEnd
+	\projectSubheading {Autonomous Firefighting Robot}
+	{Co-Leader}{September 2017 – May 2018}
+		\resumeItemListStart
+			\resumeItem{Designed/built a fully autonomous firefighting robot which can navigate a room, detect a flame, and extinguish the fire using the SAMD21J18A (ARM Cortex-M0+) MCU.}
+			\resumeItem{Peripherals included: ultrasonic sensors, H-bridge motor drivers, stepper motors, brushed DC motors, and a fire detection system which utilized an array of IR diodes.}
+		\resumeItemListEnd
+	\projectSubheading {Embedded Control System Design}
+	{Student Designer}{August 2017 – December 2017}
+		\resumeItemListStart
+			\resumeItem{Wrote drivers for various analog and digital components using GPIO, timer counters, digital filter implementations, PID controllers, interrupts, and I2C. Devices included motors, displays, and I2C controlled devices all in conjunction.}
+		\resumeItemListEnd
 
-%
-%--------PROGRAMMING SKILLS------------
-%\section{Programming Skills}
-%  \resumeSubHeadingListStart
-%    \item{
-%      \textbf{Languages}{: Scala, Python, Javascript, C++, SQL, Java}
-%      \hfill
-%      \textbf{Technologies}{: AWS, Play, React, Kafka, GCE}
-%    }
-%  \resumeSubHeadingListEnd
 
+%-----------SKILLS-----------------
+\section{Specialized Skills}
+	\skillsEntry{Equipment}{Soldering  (SMD),  oscilloscope,  function  generator,  frequency  analyzer,  programmable  electronic  loads}
+	\skillsEntry{Hardware}{Snapdragon 820, SAMD20J18/21G18 (Cortex-M0+), ATSAM4SD32B (Cortex-M4), Raspberry Pi}
+	\vspace{-20pt} %% but why?
+	\skillsEntry{Software}{Crosscore Embedded Studio, Audio Weaver, Allegro PCB Viewer, SIMPLIS/SIMetrix Simulator, LTspice XVII, Mentor Graphics DxDesigner, Linux CLI}
+	\vspace{-12pt} %% but why?
+	\skillsEntry{Languages}{C, C++, python, Bash, ARM-Assembly (Cortex-M4), DataNitro (Excel-python)}
 
 %-------------------------------------------
 \end{document}
