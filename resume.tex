@@ -130,12 +130,20 @@
   }
 }
 
-% Skills item
+% Skills Entry first item
+\newcommand{\skillsEntryFirst}[2]{
+	\vspace{5pt}
+		\begin{tabular}{p{0.11\textwidth}p{0.89\textwidth}}
+			\textbf{#1:} & #2
+		\end{tabular}\vspace{-2pt}
+}
+
+% Skills Entry subsequent items
 \newcommand{\skillsEntry}[2]{
 	\vspace{5pt}
 		\begin{tabular}{p{0.11\textwidth}p{0.89\textwidth}}
 			\textbf{#1:} & #2
-		\end{tabular}
+		\end{tabular}\vspace{-7pt}
 }
 
 % set 1st list bullet
@@ -172,6 +180,7 @@
 		{Dec. 2021}
 	\educationSubheading
 		{San Jose State University}{B.S. Electrical Engineering}{August 2016 -- December 2018}
+
 
 %----------- EXPERIENCE -----------------
 \section{Work Experience}
@@ -229,11 +238,9 @@
 
 %-----------SKILLS-----------------
 \section{Specialized Skills}
-	\skillsEntry{Equipment}{Soldering  (SMD),  oscilloscope,  function  generator,  frequency  analyzer,  programmable  electronic  loads}
+	\skillsEntryFirst{Equipment}{Soldering  (SMD),  oscilloscope,  function  generator,  frequency  analyzer,  programmable  electronic  loads}
 	\skillsEntry{Hardware}{Snapdragon 820, SAMD20J18/21G18 (Cortex-M0+), ATSAM4SD32B (Cortex-M4), Raspberry Pi}
-	\vspace{-20pt} %% but why?
 	\skillsEntry{Software}{Crosscore Embedded Studio, Audio Weaver, Allegro PCB Viewer, SIMPLIS/SIMetrix Simulator, LTspice XVII, Mentor Graphics DxDesigner, Linux CLI}
-	\vspace{-12pt} %% but why?
 	\skillsEntry{Languages}{C, C++, python, Bash, ARM-Assembly (Cortex-M4), DataNitro (Excel-python)}
 
 %-------------------------------------------
